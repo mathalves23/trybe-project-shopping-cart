@@ -1,16 +1,18 @@
-// function createProductImageElement(imageSource) {
-//   const img = document.createElement('img');
-//   img.className = 'item__image';
-//   img.src = imageSource;
-//   return img;
-// }
+const button = document.querySelector('.empty-cart');
 
-// function createCustomElement(element, className, innerText) {
-//   const e = document.createElement(element);
-//   e.className = className;
-//   e.innerText = innerText;
-//   return e;
-// }
+function createProductImageElement(imageSource) {
+  const img = document.createElement('img');
+  img.className = 'item__image';
+  img.src = imageSource;
+  return img;
+}
+
+function createCustomElement(element, className, innerText) {
+  const e = document.createElement(element);
+  e.className = className;
+  e.innerText = innerText;
+  return e;
+}
 
 // function createProductItemElement({ sku, name, image }) {
 //   const section = document.createElement('section');
@@ -28,9 +30,12 @@
 //   return item.querySelector('span.item__sku').innerText;
 // }
 
-// function cartItemClickListener(event) {
-//   // coloque seu código aqui
-// }
+
+
+const cartItemClickListener = (event) => {
+  event.target.remove();
+  saveCartItems(ol.innerHTML);
+ };
 
 // function createCartItemElement({ sku, name, salePrice }) {
 //   const li = document.createElement('li');
