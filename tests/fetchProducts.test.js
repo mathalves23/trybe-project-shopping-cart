@@ -12,8 +12,8 @@ const computadorSearch = require('../mocks/search');
   })
   it('se ao chamar a função fetchProducts com o argumento "computador", a função fetch utiliza o endpoint correto', () => {
    fetchProducts('computador');
-   const ENDPOINT = 'https://api.mercadolibre.com/sites/MLB/search?q=computador';
-   expect(fetch).toHaveBeenCalledWith(ENDPOINT)
+   const endpoint = 'https://api.mercadolibre.com/sites/MLB/search?q=computador';
+   expect(fetch).toHaveBeenCalledWith(endpoint)
   })
   it('se o retorno da função fetchProducts com o argumento "computador" é uma estrutura de dados igual ao objeto computadorSearch', async () => {
     const apiObject = await fetchProducts('computador');

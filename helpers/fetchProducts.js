@@ -1,8 +1,8 @@
 const fetchProducts = (product) => {
-  const ENDPOINT = `https://api.mercadolibre.com/sites/MLB/search?q=${product}`;
-  const api = fetch(ENDPOINT)
+  const endpoint = `https://api.mercadolibre.com/sites/MLB/search?q=${product}`;
+  const api = fetch(endpoint)
     .then((promise) => promise.json())
-    .then((values) => values)
+    .then((value) => value)
     .catch((error) => error);
     return api;
 };
