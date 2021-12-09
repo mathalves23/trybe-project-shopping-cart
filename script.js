@@ -14,6 +14,14 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
+window.onload = () => {
+  fetchProducts('computador').then((answer) => {
+    const { results } = answer;
+    handleResults(results);
+    recoveringFromLocalStorage();
+  });
+  
+
 // function createProductItemElement({ sku, name, image }) {
 //   const section = document.createElement('section');
 //   section.className = 'item';
@@ -29,7 +37,6 @@ function createCustomElement(element, className, innerText) {
 // function getSkuFromProductItem(item) {
 //   return item.querySelector('span.item__sku').innerText;
 // }
-
 
 
 const cartItemClickListener = (event) => {
