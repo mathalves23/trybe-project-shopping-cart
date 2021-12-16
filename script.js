@@ -78,10 +78,16 @@ function emptyCart() {
   });
 }
 
+const localStorage = () => {
+  const saveLocalStorage = getSavedCartItems();
+  ol.innerHTML = saveLocalStorage;
+};
+
 window.onload = async () => { 
   const api = await destructionFetchProducts('computador');
   api.forEach((item) => createProductItemElement(item));
   cartItemClickListener();
   removeElement();
   emptyCart();
+  localStorage();
 };
