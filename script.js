@@ -1,4 +1,4 @@
-const { fetchItem } = require('./helpers/fetchItem');
+// const { fetchItem } = require('./helpers/fetchItem');
 
 const ol = document.querySelector('.cart__items');
 
@@ -78,7 +78,7 @@ function emptyCart() {
   });
 }
 
-const localStorage = () => {
+const getLocalStorage = () => {
   const saveLocalStorage = getSavedCartItems();
   ol.innerHTML = saveLocalStorage;
 };
@@ -86,8 +86,8 @@ const localStorage = () => {
 const destructionFetchProducts = async (item) => {
   const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${item}`);
   const data = await result.json();
-  const objArray = data.results.map((e) => ({ name: e.title, image: e.thumbnail, sku: e.id }));
-  return objArray;
+  const object = data.results.map((e) => ({ name: e.title, image: e.thumbnail, sku: e.id }));
+  return object;
 };
 
 window.onload = async () => { 
@@ -96,5 +96,5 @@ window.onload = async () => {
   cartItemClickListener();
   removeElement();
   emptyCart();
-  localStorage();
+  getLocalStorage();
 };
