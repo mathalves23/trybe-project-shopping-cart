@@ -1,4 +1,5 @@
-const { fetchItem } = require("./helpers/fetchItem");
+const { fetchItem } = require('./helpers/fetchItem');
+
 const ol = document.querySelector('.cart__items');
 
 function createProductImageElement(imageSource) {
@@ -70,9 +71,17 @@ function removeElement() {
   });
 }
 
+function emptyCart() {
+  const clean = document.querySelector('.empty-cart');
+  clean.addEventListener('click', () => {
+    ol.innerHTML = '';
+  });
+}
+
 window.onload = async () => { 
   const api = await destructionFetchProducts('computador');
   api.forEach((item) => createProductItemElement(item));
   cartItemClickListener();
   removeElement();
+  emptyCart();
 };
