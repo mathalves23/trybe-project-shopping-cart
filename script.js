@@ -78,23 +78,26 @@ function emptyCart() {
   });
 }
 
-function getLocalStorage() {
-  const saveLocalStorage = getSavedCartItems();
-  const ol = document.querySelector('.cart__items');
-  ol.innerHTML = saveLocalStorage;
-}
+function getFromLocalStorage() {  
+  const recoveredData = getSavedCartItems();
+  cartItems.innerHTML = recoveredData;
+  const listItems = document.querySelectorAll('li');
+  listItems.forEach((li) => {
+    li.addEventListener('click', cartItemClickListener);
+  });
+  } 
 
-function removeLoading() {
-  const creatP = document.createElement('p');
-  creatP.className = 'Loading';
-  document.body.append(creatP);
-  creatP.innerHTML = 'Carregando...';
+function loading() {
+  const newElement = document.createElement('p');
+  newElement.className = 'loading';
+  document.body.append(newElement);
+  newElement.innerHTML = 'carregando...';
   setTimeout(() => {
-    document.body.removeChild(creatP);
+    document.body.removeChild(newElement);
   }, 2000);
 }
 
-const destructionFetchProducts = async (item) => {
+const fetchProducts = async (item) => {
   const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${item}`);
   const data = await result.json();
   const objArray = data.results.map((e) => ({ name: e.title, image: e.thumbnail, sku: e.id }));
@@ -102,11 +105,11 @@ const destructionFetchProducts = async (item) => {
 };
 
 window.onload = async () => {
-  const idApi = await destructionFetchProducts('computador');
+  const idApi = await fetchProducts('computador');
   idApi.forEach((item) => createProductItemElement(item));
   cartItemClickListener();
   removeElement();
   emptyCart();
-  removeLoading();
-  getLocalStorage();
+  loading();
+  getFromLocalStorage();
 };
