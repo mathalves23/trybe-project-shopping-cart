@@ -97,7 +97,7 @@ function loading() {
   }, 2000);
 }
 
-const fetchProducts = async (item) => {
+const destructionFetchProducts = async (item) => {
   const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${item}`);
   const data = await result.json();
   const objArray = data.results.map((e) => ({ name: e.title, image: e.thumbnail, sku: e.id }));
@@ -105,7 +105,7 @@ const fetchProducts = async (item) => {
 };
 
 window.onload = async () => {
-  const idApi = await fetchProducts('computador');
+  const idApi = await destructionFetchProducts('computador');
   idApi.forEach((item) => createProductItemElement(item));
   cartItemClickListener();
   removeElement();
