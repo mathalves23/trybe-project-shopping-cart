@@ -1,4 +1,5 @@
-const ol = document.querySelector('.cart__items');
+const cartItems = document.querySelector('.cart__items');
+const totalPrice = document.querySelector('.total-price');
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -30,77 +31,79 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-const totalPrice = document.querySelector('.total-price');
 const array = [];
 let total = 0;
+
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   array.push(salePrice);
-  total = array.reduce((acc, current) => acc + current);
+  total = array.reduce((acc, current) => acc + current, 0);
   totalPrice.innerHTML = total;
-
-  const olShoppingCart = document.querySelector('.cart');
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  olShoppingCart.appendChild(li);
+  cartItems.appendChild(li);
   return li;
 }
 
-const cartItemClickListener = () => {
+function cartItemClickListener() {
   const button = document.querySelectorAll('.item__add');
-  button.forEach((btn) => btn.addEventListener('click', async ({ target }) => {
+  button.forEach((btn) =>
+    btn.addEventListener('click', async ({ target }) => {
       const nome = getSkuFromProductItem(target.parentNode);
       const result = await fetchItem(nome);
       const li = createCartItemElement(result);
       ol.appendChild(li);
       saveCartItems(ol.innerHTML);
     }));
-};
+}
 
 function removeElement() {
-  ol.addEventListener('click', (event) => {
+  cartItems.addEventListener('click', (event) => {
     if (event.target.matches('.cart__item')) {
       const sub = event.target.innerText.split('$');
       total -= Number(sub[1]);
-      totalTxt.innerHTML = total;
-      ol.removeChild(event.target);
-      saveCartItems(ol.innerHTML);
+      totalPrice.innerHTML = total;
+      cartItems.removeChild(event.target);
+      saveCartItems(cartItems.innerHTML);
     }
   });
 }
 
 function emptyCart() {
-  const clean = document.querySelector('.empty-cart');
-  clean.addEventListener('click', () => {
-    ol.innerHTML = '';
+  const empty = document.querySelector('.empty-cart');
+  empty.addEventListener('click', () => {
+    cartItems.innerHTML = '';
+    total = 0;
+    totalPrice.innerHTML = total;
   });
 }
 
-const getLocalStorage = () => {
+function getLocalStorage() {
   const saveLocalStorage = getSavedCartItems();
+  const ol = document.querySelector('.cart__items');
   ol.innerHTML = saveLocalStorage;
-};
+}
 
-const removeLoading = () => {
-  const newElement = document.createElement('p');
-  newElement.className = 'loading';
-  document.body.append(newElement);
-  newElement.innerHTML = 'carregando...';
+function removeLoading() {
+  const creatP = document.createElement('p');
+  creatP.className = 'Loading';
+  document.body.append(creatP);
+  creatP.innerHTML = 'Carregando...';
   setTimeout(() => {
-    document.body.removeChild(newElement);
+    document.body.removeChild(creatP);
   }, 2000);
-};
+}
 
 const destructionFetchProducts = async (item) => {
   const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${item}`);
   const data = await result.json();
-  const object = data.results.map((e) => ({ name: e.title, image: e.thumbnail, sku: e.id }));
-  return object;
+  const objArray = data.results.map((e) => ({ name: e.title, image: e.thumbnail, sku: e.id }));
+  return objArray;
 };
 
-window.onload = async () => { 
-  const api = await destructionFetchProducts('computador');
-  api.forEach((item) => createProductItemElement(item));
+window.onload = async () => {
+  const idApi = await destructionFetchProducts('computador');
+  idApi.forEach((item) => createProductItemElement(item));
   cartItemClickListener();
   removeElement();
   emptyCart();
